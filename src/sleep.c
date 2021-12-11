@@ -1,7 +1,7 @@
 #include <time.h>
 #include "sleep.h"
 
-#define ONE_SECOND 1		  // 1 second
+#define ONE_SECOND 1          // 1 second
 #define HALF_SECOND 500000000 // 0.5 seconds
 
 /*
@@ -10,11 +10,11 @@
  */
 void sleep_n_seconds(long segundos)
 {
-	struct timespec tim, tim2;
-	tim.tv_sec = segundos;
-	tim.tv_nsec = 0;
+    struct timespec tim, tim2;
+    tim.tv_sec = segundos;
+    tim.tv_nsec = 0;
 
-	nanosleep(&tim, &tim2);
+    nanosleep(&tim, &tim2);
 }
 
 /*
@@ -23,11 +23,11 @@ void sleep_n_seconds(long segundos)
  */
 void sleep_n_nanoseconds(long nanosegundos)
 {
-	struct timespec tim, tim2;
-	tim.tv_sec = 0;
-	tim.tv_nsec = nanosegundos;
+    struct timespec tim, tim2;
+    tim.tv_sec = 0;
+    tim.tv_nsec = nanosegundos;
 
-	nanosleep(&tim, &tim2);
+    nanosleep(&tim, &tim2);
 }
 
 /*
@@ -36,7 +36,7 @@ void sleep_n_nanoseconds(long nanosegundos)
  */
 void sleep_a_bit()
 {
-	sleep_n_seconds(ONE_SECOND);
+    sleep_n_seconds(ONE_SECOND);
 }
 
 /*
@@ -45,5 +45,5 @@ void sleep_a_bit()
  */
 void sleep_a_nano_bit()
 {
-	sleep_n_nanoseconds(HALF_SECOND);
+    sleep_n_nanoseconds(HALF_SECOND);
 }

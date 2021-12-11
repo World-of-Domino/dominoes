@@ -5,8 +5,8 @@
 
 typedef struct
 {
-	int n_tiles;
-	t_tile f[NUM_TILES_DOMINO];
+    int n_tiles;
+    t_tile f[NUM_TILES_DOMINO];
 } t_table;
 
 void initialize_table(t_table *p_m);

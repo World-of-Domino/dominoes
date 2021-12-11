@@ -11,18 +11,18 @@
 
 typedef struct
 {
-	int n_tiles;
-	t_tile f[NUM_TILES_DOMINO]; // tiles que tiene
-	int type;
-	int weight;
+    int n_tiles;
+    t_tile f[NUM_TILES_DOMINO]; // tiles que tiene
+    int type;
+    int weight;
 } t_player;
 
 typedef struct
 {
-	int n_players;
-	int a_human; // TRUE or FALSE
-	int turn;
-	t_player j[MAX_PLAYERS]; // tiles que tiene y otras cosas
+    int n_players;
+    int a_human; // TRUE or FALSE
+    int turn;
+    t_player j[MAX_PLAYERS]; // tiles que tiene y otras cosas
 } t_players;
 
 void print_player(t_player j, int visible);

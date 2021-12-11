@@ -9,17 +9,17 @@
 
 typedef struct
 {
-	int n_tile;	 // Number of tiles in the tiles vector of the player
-	char corner; // Left or right
-	int rotated; // True or false
-	int dobledobla;
+    int n_tile;     // Number of tiles in the tiles vector of the player
+    char corner; // Left or right
+    int rotated; // True or false
+    int dobledobla;
 } t_tirada;
 
 typedef struct
 {
-	int n_moves;
-	t_tirada t[MAX_MOVES_PLAYER];
-	int count_dobles, dobleright, dobleleft;
+    int n_moves;
+    t_tirada t[MAX_MOVES_PLAYER];
+    int count_dobles, dobleright, dobleleft;
 } t_tiradas;
 
 void print_move(t_tirada ts, t_player j);

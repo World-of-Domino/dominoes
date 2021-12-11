@@ -22,14 +22,9 @@ typedef struct
     // if num_passes == n_players the game ends.
 } t_game;
 
-void initialize_game(t_game *p_pa);
-void print_game_state(t_game pa);
-void make_play(t_game *p_pa);
-int has_the_game_ended(t_game pa);
-
 void initialize_game(t_game *p_pa)
 {
-    int i, j, p, k, nj, nf;
+    int i, j, nj, nf;
 
     char s1[50] = "Number of players?", s2[50] = "Will there be a human player?", s3[50] = "Do you wish to activate omniscience?", s4[50] = "Do you wish to see the table in 2D?";
 
@@ -50,7 +45,8 @@ void initialize_game(t_game *p_pa)
             p_pa->js.j[i].f[j] = pick_from_stack(&(p_pa->pi));
 
     if (p_pa->js.a_human == TRUE)
-    { // Initialize players.
+    {
+        // Initialize players.
         p_pa->js.j[0].type = T_HUMAN;
         p_pa->js.j[0].n_tiles = 7;
         for (i = 1; i < p_pa->js.n_players; i++)
@@ -88,7 +84,6 @@ void initialize_game(t_game *p_pa)
 
 void print_game_state(t_game pa)
 {
-    int i;
     print_stack(pa.pi, pa.visible);
     print_table(pa.m, pa.dim);
     printf("\n");
@@ -96,8 +91,8 @@ void print_game_state(t_game pa)
     print_turn(pa.js);
 }
 void print_final_game_state(t_game pa)
-{ // Prints the game at the time of the ending move.
-    int i;
+{
+    // Prints the game at the time of the ending move.
     sleep_a_bit(10);
     printf("\tFINAL STATE OF THE GAME:\n\n");
     pa.visible = TRUE;
@@ -117,11 +112,13 @@ void make_play(t_game *p_pa)
     ts = calculate_possible_moves(p_pa->js.j[p_pa->js.turn], p_pa->m); // We calculate the possible moves.
 
     while (ts.n_moves == 0 && p_pa->pi.n_tiles != 0)
-    { // If the player cannot move, he has to pick a tile from the stack.
+    {
+        // If the player cannot move, he has to pick a tile from the stack.
         p_pa->js.j[p_pa->js.turn].f[p_pa->js.j[p_pa->js.turn].n_tiles] = pick_from_stack(&(p_pa->pi));
 
         if (p_pa->visible == TRUE)
-        {                                                  // Omniscience active.
+        {
+            // Omniscience active.
             if (p_pa->js.j[p_pa->js.turn].type == T_HUMAN) // If it is human, the tile is shown.
                 printf("You take tiles from the stack! Picked a %d:%d ;P\n", p_pa->js.j[p_pa->js.turn].f[p_pa->js.j[p_pa->js.turn].n_tiles].num1, p_pa->js.j[p_pa->js.turn].f[p_pa->js.j[p_pa->js.turn].n_tiles].num2);
             else
@@ -143,9 +140,11 @@ void make_play(t_game *p_pa)
     print_moves(ts, p_pa->js.j[p_pa->js.turn]);
 
     if (p_pa->js.j[p_pa->js.turn].type == T_HUMAN)
-    { // Human plays.
+    {
+        // Human plays.
         if (ts.n_moves == 0 && p_pa->pi.n_tiles == 0)
-        { // Human cannot move and passes turn.
+        {
+            // Human cannot move and passes turn.
             printf("You pass turn! :(\n\n");
             p_pa->num_passes++;
         }
@@ -167,14 +166,16 @@ void make_play(t_game *p_pa)
             }
             printf("\n");
             if ((ts.count_dobles > 1) && (tirada == ts.n_moves))
-            {                                                                                        // Dobledobla is when the counter has 2 moves with doubles and the player picks it.
+            {
+                // Dobledobla is when the counter has 2 moves with doubles and the player picks it.
                 play_from_right(&(p_pa->m), p_pa->js.j[p_pa->js.turn].f[ts.t[ts.dobleleft].n_tile]); // Double from the right.
                 play_from_left(&(p_pa->m), p_pa->js.j[p_pa->js.turn].f[ts.t[ts.dobleright].n_tile]); // Double from the left.
                 for (i = ts.t[ts.dobleright].n_tile; i < p_pa->js.j[p_pa->js.turn].n_tiles - 1; i++) // Deletes a double from the tiles vector of the player.
                     p_pa->js.j[p_pa->js.turn].f[i] = p_pa->js.j[p_pa->js.turn].f[i + 1];
                 p_pa->js.j[p_pa->js.turn].n_tiles--;
                 if (ts.t[ts.dobleleft].n_tile > ts.t[ts.dobleright].n_tile)
-                { // Deletes the other double from the tiles vector depending where it is found respecting the first one.
+                {
+                    // Deletes the other double from the tiles vector depending where it is found respecting the first one.
                     for (i = ts.t[ts.dobleleft - 1].n_tile; i < p_pa->js.j[p_pa->js.turn].n_tiles - 1; i++)
                         p_pa->js.j[p_pa->js.turn].f[i] = p_pa->js.j[p_pa->js.turn].f[i + 1];
                     p_pa->js.j[p_pa->js.turn].n_tiles--;
@@ -187,7 +188,8 @@ void make_play(t_game *p_pa)
                 }
             }
             if (tirada != ts.n_moves)
-            {                                     // If no dobledobla
+            {
+                // If no dobledobla
                 if (ts.t[tirada].rotated == TRUE) // Rotates the tile if necessary.
                     turn_tile(&(p_pa->js.j[p_pa->js.turn].f[ts.t[tirada].n_tile]));
                 if (ts.t[tirada].corner == 'd')
@@ -220,14 +222,16 @@ void make_play(t_game *p_pa)
                 ts.n_moves++;                   // Dobledobla counts as an extra move.
             tirada = random_number(ts.n_moves); // Picks a random move.
             if ((ts.count_dobles > 1) && (tirada == ts.n_moves))
-            {                                                                                        // Dobledobla is when the counter has 2 moves with doubles and the player picks it.
+            {
+                // Dobledobla is when the counter has 2 moves with doubles and the player picks it.
                 play_from_right(&(p_pa->m), p_pa->js.j[p_pa->js.turn].f[ts.t[ts.dobleleft].n_tile]); // Double from the right.
                 play_from_left(&(p_pa->m), p_pa->js.j[p_pa->js.turn].f[ts.t[ts.dobleright].n_tile]); // Double from the left.
                 for (i = ts.t[ts.dobleright].n_tile; i < p_pa->js.j[p_pa->js.turn].n_tiles - 1; i++) // Deletes a double from the tiles vector of the player.
                     p_pa->js.j[p_pa->js.turn].f[i] = p_pa->js.j[p_pa->js.turn].f[i + 1];
                 p_pa->js.j[p_pa->js.turn].n_tiles--;
                 if (ts.t[ts.dobleleft].n_tile > ts.t[ts.dobleright].n_tile)
-                { // Deletes the other double from the tiles vector depending where it is found respecting the first one.
+                {
+                    // Deletes the other double from the tiles vector depending where it is found respecting the first one.
                     for (i = ts.t[ts.dobleleft - 1].n_tile; i < p_pa->js.j[p_pa->js.turn].n_tiles - 1; i++)
                         p_pa->js.j[p_pa->js.turn].f[i] = p_pa->js.j[p_pa->js.turn].f[i + 1];
                     p_pa->js.j[p_pa->js.turn].n_tiles--;
@@ -274,7 +278,8 @@ int has_the_game_ended(t_game pa)
         pa.js.turn = pa.js.n_players - 1;
 
     if (pa.js.j[pa.js.turn].n_tiles == 0)
-    { // Winning condition.
+    {
+        // Winning condition.
         if (pa.js.j[pa.js.turn].type == T_HUMAN)
         {
             printf("===>>> HAS GANADO! :) <<<===\n\n");
@@ -291,7 +296,8 @@ int has_the_game_ended(t_game pa)
         printf("===>>> JUEGO BLOQUEADO <<<===\n\n");
         aux = TRUE;
         for (i = 0; i < pa.js.n_players; i++)
-        { // Calculates the weight of the tiles.
+        {
+            // Calculates the weight of the tiles.
             pa.js.j[i].weight = 0;
             for (j = 0; j < pa.js.j[i].n_tiles; j++)
             {
@@ -308,7 +314,8 @@ int has_the_game_ended(t_game pa)
             }
         }
         for (i = 0; i < pa.js.n_players; i++)
-        { // Draw.
+        {
+            // Draw.
             if (minweight == pa.js.j[i].weight && i != jugminweight)
             {
                 empate = TRUE;
@@ -323,6 +330,5 @@ int has_the_game_ended(t_game pa)
             printf("\n===>>> HA GANADO EL J%d POR MINIMO weight(%d de weight) <<<===\n\n\n", jugminweight, minweight);
         }
     }
-    else
-        return (aux);
+    return (aux);
 }
